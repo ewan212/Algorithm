@@ -131,10 +131,5 @@ def traceback(m,n):
 
 
 
-fib(n-1, n-2)
-
-
-
-
 
 
