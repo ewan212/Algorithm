@@ -1,1 +1,1 @@
-## Alignment algorithms implementation
+## Bioinf algorithms implementation
