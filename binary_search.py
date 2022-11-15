@@ -53,3 +53,8 @@ def recursion_b_search(arr, x, low, high):
 arr = [2,4,10,9,8,45]
 x = 2
 recursion_b_search(arr, x, 0, len(arr) - 1 )
+
+
+
+
+

@@ -39,24 +39,27 @@ matrix = score_matrix(seq, ref, match_score, gap_cost)
 
 
 
-i,j  = np.unravel_index(matrix.argmax(), matrix.shape) # max value index
-
-
-def trace_back(matrix):
+def smith_waterman(matrix):
     seq_align = ''
-    fin = []
-    i,j  = np.unravel_index(matrix.argmax(), matrix.shape)
-    if matrix[i-1,j-1] == 0:
-        return seq_align, fin.append((i,j))
-     
-    seq_align += seq[i-1]
-    matrix = matrix[:i, :j]
-    i, j = i-1, j-1
-    return trace_back(matrix)
+    ref_align = ''
+    m_flip = np.flip(np.flip(matrix, 0), 1)
+    # unravel_index: converts flat/linear index into a tuple of coordinate arrays
+    m,n = np.unravel_index(m_flip.argmax(), m_flip.shape)
+    seq_flip = seq[::-1]
+    while m_flip[m,n] > 0:
+        m, n = m +1, n+1 
+        seq_align += seq_flip[m-1]
+    return seq_align[::-1]
 
 
 
 
+
+
+
+
+
+# recursion? 
 
 def traceback(matrix, b, b_='', old_i=0):
     '''
@@ -71,6 +74,28 @@ def traceback(matrix, b, b_='', old_i=0):
     b_ = b[j - 1] + '-' + b_ if old_i - i > 1 else b[j - 1] + b_
     return traceback(matrix[0:i, 0:j], b, b_, i)
 
+
+while matrix[m_,n_] > 0: 
+    m_flip = np.flip(np.flip(matrix, 0), 1)
+    m,n = np.unravel_index(m_flip.argmax(), m_flip.shape) # max value last occurance
+    m_, n_ = np.subtract(matrix.shape, (m+1,n+1))
+    matrix = matrix[0:m_, 0:n_]
+    m_, n_ = m_ -1, n_ -1   
+print(m_, n_, matrix[m_,n_])
+
+
+def traceback(matrix): 
+    m_flip = np.flip(np.flip(matrix, 0), 1)
+    m,n = np.unravel_index(m_flip.argmax(), m_flip.shape) # max value last occurance
+    m_, n_ = np.subtract(matrix.shape, (m+1,n+1))
+    if matrix[m_, n_] == 0:
+        return m_, n_ 
+    else:
+        m_, n_ = m_ -1, n_ -1
+        return traceback(matrix[0:m_,0:n_])  
+        
+        
+ 
 
 
 
